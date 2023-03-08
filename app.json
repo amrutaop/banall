@@ -1,69 +1,39 @@
 {
-    "name": "Bgt Ban All Bot",
-    "description": "Ban All Bot",
-    "repository": "https://github.com/amrutaop/BanAll",
-    "logo": "https://te.legra.ph/file/f73af9a4ffe130a83d8d2.jpg",
-    "keywords": [
+   "name": "Ban All Bot",
+   "description": "Ban All Bot",
+   "repository": "https://github.com/amrutaop/BanAll",
+   "logo": "https://te.legra.ph/file/f73af9a4ffe130a83d8d2.jpg",
+   "keywords": [
         "python",
         "telegram"
-    ],
-    "buildpacks": [{
-    "url": "heroku/python"
-  }],
-    "formation": {
-        "worker": {
-            "quantity": 1,
-            "size": "eco"
-        }
-     },
-       "addons": [
-      {
-         "options": {
-            "version": "12"
-         },
-         "plan": "heroku-postgresql"
+  "repository": "https://github.com/amrutaop/BanAll",
+  "website": "https://github.com/AmrutaOp",
+  "success_url": "https://t.me/Amruta_op",
+  "env": {
+      "API_ID": {
+        "description": "Fill Api ID Take this value from My.telegram.org",
+        "value": "",
+        "required": true
+      },
+      "API_HASH": {
+        "description": "Fill Api hash Take this value from My.telegram.org",
+        "value": "",
+        "required": true
+      },
+      "BOT_TOKEN": {
+        "description": "Bot Token",
+        "value": "",
+        "required": true
+      },      
+      "SUDO": {
+            "description": "Sudo users id space by space",
+            "value": "",
+            "required": true  
       }
-   ],
-    "env": {
-        "BOT_TOKEN": {
-            "description": "Your bot token",
-            "value": "",
-            "required": true
-        },
-        "API_ID": {
-            "description": "Get from https://my.telegram.org",
-            "value": "",
-            "required": true
-        },
-        "API_HASH": {
-            "description": "Get from https://my.telegram.org",
-            "value": "",
-            "required": true
-        },
-        "OWNER_USERNAME": {
-            "description": "Input Owner Username here ( Without @)",
-            "required": true
-        },
-        "SUPPORT_GROUP": {
-            "description": "Input support group username here ( Without @)",
-            "required": true
-        },
-        "UPDATES_CHANNEL": {
-            "description": "Input updates channel username here ( Without @) ",
-            "required": true
-        },
-        "BOT_USERNAME": {
-            "description": "Input Bot USERNAME here ( Without @)",
-            "required": true
-        },  
-        "BOT_IMAGE": {
-            "description": "Input Bot start pic link here",
-            "required": true
-        },
-        "SUDO": {
-            "description": "sudo ids here.",
-            "value": "",
-            "required": true
+    },
+    "buildpacks": [
+        {
+            "url": "heroku/python"
         }
-    }
+    ]
 }
