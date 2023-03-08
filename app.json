@@ -8,7 +8,7 @@
         "telegram"
     ],
     "buildpacks": [{
-    "url": "Heroku-22"
+    "url": "Heroku"
   }],
     "formation": {
         "worker": {
