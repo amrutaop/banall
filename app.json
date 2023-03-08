@@ -1,0 +1,69 @@
+{
+    "name": "Bgt Ban All Bot",
+    "description": "Ban All Bot",
+    "repository": "https://github.com/BikashhalderNew/BanAllBot",
+    "logo": "https://te.legra.ph/file/f73af9a4ffe130a83d8d2.jpg",
+    "keywords": [
+        "python",
+        "telegram"
+    ],
+    "buildpacks": [{
+    "url": "heroku-22"
+  }],
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "eco"
+        }
+     },
+       "addons": [
+      {
+         "options": {
+            "version": "12"
+         },
+         "plan": "heroku-postgresql"
+      }
+   ],
+    "env": {
+        "BOT_TOKEN": {
+            "description": "Your bot token",
+            "value": "",
+            "required": true
+        },
+        "API_ID": {
+            "description": "Get from https://my.telegram.org",
+            "value": "",
+            "required": true
+        },
+        "API_HASH": {
+            "description": "Get from https://my.telegram.org",
+            "value": "",
+            "required": true
+        },
+        "OWNER_USERNAME": {
+            "description": "Input Owner Username here ( Without @)",
+            "required": true
+        },
+        "SUPPORT_GROUP": {
+            "description": "Input support group username here ( Without @)",
+            "required": true
+        },
+        "UPDATES_CHANNEL": {
+            "description": "Input updates channel username here ( Without @) ",
+            "required": true
+        },
+        "BOT_USERNAME": {
+            "description": "Input Bot USERNAME here ( Without @)",
+            "required": true
+        },  
+        "BOT_IMAGE": {
+            "description": "Input Bot start pic link here",
+            "required": true
+        },
+        "SUDO": {
+            "description": "sudo ids here.",
+            "value": "",
+            "required": true
+        }
+    }
+}

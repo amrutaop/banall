@@ -1,0 +1,226 @@
+#  Copyright (c) 2023 @III_AMRITA_III- @III_AMRITA_III
+# Telegram Ban All Bot 
+# Creator - @III_AMRITA_III
+
+import logging
+import re
+import os
+import sys
+import asyncio
+from telethon import TelegramClient, events
+import telethon.utils
+from telethon.tl import functions
+from telethon.tl.functions.channels import LeaveChannelRequest
+from asyncio import sleep
+from telethon.tl.types import ChatBannedRights, ChannelParticipantsAdmins, ChatAdminRights
+from telethon.tl.functions.channels import EditBannedRequest
+from datetime import datetime
+from var import Var
+from time import sleep
+from telethon.errors.rpcerrorlist import FloodWaitError
+from telethon.tl import functions
+from telethon.tl.types import (
+    ChannelParticipantsAdmins,
+    ChannelParticipantsKicked,
+    ChatBannedRights,
+    UserStatusEmpty,
+    UserStatusLastMonth,
+    UserStatusLastWeek,
+    UserStatusOffline,
+    UserStatusOnline,
+    UserStatusRecently,
+)
+
+RIGHTS = ChatBannedRights(
+    until_date=None,
+    view_messages=True,
+    send_messages=True,
+    send_media=True,
+    send_stickers=True,
+    send_gifs=True,
+    send_games=True,
+    send_inline=True,
+    embed_links=True,
+)
+
+
+logging.basicConfig(level=logging.INFO)
+
+print("𝐒𝐭𝐚𝐫𝐭𝐢𝐧𝐠  𝐁𝐚𝐧𝐚𝐥𝐥 𝐁𝐨𝐭.....")
+
+Bgt = TelegramClient('Bgt', Var.API_ID, Var.API_HASH).start(bot_token=Var.BOT_TOKEN)
+
+
+SUDO_USERS = []
+for x in Var.SUDO: 
+    SUDO_USERS.append(x)
+
+@Bgt.on(events.NewMessage(pattern="/ping"))  
+async def ping(e):
+    if e.sender_id in SUDO_USERS:
+        start = datetime.now()
+        text = "Pong!"
+        event = await e.reply(text, parse_mode=None, link_preview=None )
+        end = datetime.now()
+        ms = (end-start).microseconds / 1000
+        await event.edit(f"**𝐈'𝐌 𝐑𝐮𝐧 🥀** \n\n 🌹 𝐏𝐨𝐧𝐠 🌹!! `{ms}` ms")
+
+
+@Bgt.on(events.NewMessage(pattern="/kickall"))
+async def kickall(event):
+   if event.sender_id in SUDO_USERS:
+     if not event.is_group:
+         Reply = f"𝐃𝐞𝐚𝐫 𝐌𝐚𝐬𝐭𝐞𝐫 😗 !! 𝐓𝐡𝐢𝐬 𝐂𝐦𝐝 𝐎𝐧𝐥𝐲 𝐔𝐬𝐞 𝐈𝐧 𝐀𝐧𝐲 𝐆𝐫𝐨𝐮𝐩 😒"
+         await event.reply(Reply)
+     else:
+         await event.delete()
+         Bgt = await event.get_chat()
+         BgtoeLop = await event.client.get_me()
+         admin = Bgt.admin_rights
+         creator = Bgt.creator
+         if not admin and not creator:
+              return await event.reply("𝐈 𝐃𝐨𝐧'𝐭 𝐇𝐚𝐯𝐞 𝐅𝐮𝐥𝐥 𝐀𝐝𝐦𝐢𝐧 𝐑𝐢𝐠𝐡𝐭𝐬 😒 !!")
+         Bgtop = await Bgt.send_message(event.chat_id, "**𝐇𝐞𝐲 𝐌𝐚𝐬𝐭𝐞𝐫 !! 𝐈'𝐦 𝐀𝐥𝐢𝐯𝐞 💝**")
+         admins = await event.client.get_participants(event.chat_id, filter=ChannelParticipantsAdmins)
+         admins_id = [i.id for i in admins]
+         all = 0
+         kimk = 0
+         async for user in event.client.iter_participants(event.chat_id):
+             all += 1
+             try:
+                if user.id not in admins_id:
+                    await event.client.kick_participant(event.chat_id, user.id)
+                    kick += 1
+                    await asyncio.sleep(0.1)
+             except Exception as e:
+                    print(str(e))
+                    await asyncio.sleep(0.1)
+         await Bgtop.edit(f"**𝐔𝐬𝐞𝐫𝐬 𝐊𝐢𝐜𝐤𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 😗 ! \n\n 𝐊𝐢𝐜𝐤𝐞𝐝 👉:** `{kick}` \n **𝐓𝐨𝐭𝐚𝐥 🤞:** `{all}`")
+    
+
+@Bgt.on(events.NewMessage(pattern="/banall"))
+async def banall(event):
+   if event.sender_id in SUDO_USERS:
+     if not event.is_group:
+         Reply = f"𝐃𝐞𝐚𝐫 𝐌𝐚𝐬𝐭𝐞𝐫 😗 !! 𝐓𝐡𝐢𝐬 𝐂𝐦𝐝 𝐎𝐧𝐥𝐲 𝐔𝐬𝐞 𝐈𝐧 𝐀𝐧𝐲 𝐆𝐫𝐨𝐮𝐩 😒."
+         await event.reply(Reply)
+     else:
+         await event.delete()
+         Bgt = await event.get_chat()
+         Bgtop = await event.client.get_me()
+         admin = Bgt.admin_rights
+         creator = Bgt.creator
+         if not admin and not creator:
+              return await event.reply("𝐈 𝐃𝐨𝐧'𝐭 𝐇𝐚𝐯𝐞 𝐅𝐮𝐥𝐥 𝐀𝐝𝐦𝐢𝐧 𝐑𝐢𝐠𝐡𝐭𝐬 🙂 !!")
+         BgtoeL = await Bgt.send_message(event.chat_id, "**𝐇𝐞𝐲 𝐌𝐚𝐬𝐭𝐞𝐫 𝐈'𝐦 𝐀𝐥𝐢𝐯𝐞 💝**")
+         admins = await event.client.get_participants(event.chat_id, filter=ChannelParticipantsAdmins)
+         admins_id = [i.id for i in admins]
+         all = 0
+         ban = 0
+         async for user in event.client.iter_participants(event.chat_id):
+             all += 1
+             try:
+               if user.id not in admins_id:
+                    await event.client(EditBannedRequest(event.chat_id, user.id, RIGHTS))
+                    ban += 1
+                    await asyncio.sleep(0.1)
+             except Exception as e:
+                   print(str(e))
+                   await asyncio.sleep(0.1)
+         await BgtoeL.edit(f"**🤫 𝐔𝐬𝐞𝐫𝐬 𝐁𝐚𝐧𝐧𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐅𝐮𝐥𝐥𝐲 ! \n\n 𝐁𝐚𝐧𝐧𝐞𝐝 𝐔𝐬𝐞𝐫𝐬 👻:** `{ban}` \n ** 𝐓𝐨𝐭𝐚𝐥 𝐔𝐬𝐞𝐫 💌:** `{all}`")
+
+    
+@Bgt.on(events.NewMessage(pattern="/unbanall"))
+async def unban(event):
+   if event.sender_id in SUDO_USERS:
+     if not event.is_group:
+         Reply = f"𝐃𝐞𝐚𝐫 𝐌𝐚𝐬𝐭𝐞𝐫 😗 !! 𝐓𝐡𝐢𝐬 𝐂𝐦𝐝 𝐎𝐧𝐥𝐲 𝐔𝐬𝐞 𝐈𝐧 𝐀𝐧𝐲 𝐆𝐫𝐨𝐮𝐩 😒."
+         await event.reply(Reply)
+     else:
+         msg = await event.reply("𝐒𝐞𝐚𝐫𝐜𝐡𝐢𝐧𝐠 𝐏𝐚𝐫𝐭𝐢𝐜𝐢𝐩𝐚𝐧𝐭 𝐋𝐢𝐬𝐭𝐬 🔍.")
+         p = 0
+         async for i in event.client.iter_participants(event.chat_id, filter=ChannelParticipantsKicked, aggressive=True):
+              rights = ChatBannedRights(until_date=0, view_messages=False)
+              try:
+                await event.client(functions.channels.EditBannedRequest(event.chat_id, i, rights))
+              except FloodWaitError as ex:
+                 print(f"𝐒𝐩𝐞𝐞𝐩𝐢𝐧𝐠 𝐅𝐨𝐫 {ex.seconds} 𝐒𝐞𝐜...")
+                 sleep(ex.seconds)
+              except Exception as ex:
+                 await msg.edit(str(ex))
+              else:
+                  p += 1
+         await msg.edit("{}: {} unbanned".format(event.chat_id, p))
+         
+         
+@Bgt.on_message(filters.command("start") & filters.private & ~filters.edited)
+async def start_(client: Client, message: Message):
+    await message.reply_photo(
+        photo=f"{BOT_IMAGE}",
+        caption=f"""**━━━━━━━━━━━━━━━━━━━━━━━━
+💥 𝐇𝐢  𝐈'𝐦 𝐀 𝐀𝐝𝐯𝐚𝐧𝐜𝐞 𝐁𝐚𝐧 𝐚𝐥𝐥 𝐁𝐨𝐭 🌷.\n\n📌 𝐌𝐲 𝐍𝐚𝐦𝐞 𝐈𝐬 𝐁𝐚𝐧 𝐚𝐥𝐥 𝐁𝐨𝐭 🌷 𝐅𝐨𝐫𝐦 𝐈𝐧𝐝𝐢𝐚 🇮🇳 
+
+┏━━━━━━━━━━━━━━━━━┓
+┣❥︎ ♕︎𝐎𝐰𝐧𝐞𝐫♕︎   » [𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞](https://t.me/{OWNER_USERNAME})
+┣❥︎ 𝐔𝐩𝐝𝐚𝐭𝐞𝐬 ➪ » [𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞](https://t me/{UPDATES_CHANNEL})
+┣❥︎ 𝐒𝐮𝐩𝐩𝐨𝐫𝐭 ➪ » [𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞](https://t.me/{SUPPORT_GROUP})
+┣❥︎ 𝐂𝐫𝐞𝐚𝐭𝐨𝐫 ➪ » [𝐀ᴍʀɪᴛᴀ](https://t.me/III_AMRITA_III)
+┗━━━━━━━━━━━━━━━━━┛
+
+💞 𝐉𝐮𝐬𝐭 𝐀𝐝𝐝 𝐌𝐞 » 𝐓𝐨 𝐘𝐨𝐮𝐫 𝐆𝐫𝐨𝐮𝐩 𝐀𝐧𝐝
+𝐄𝐧𝐣𝐨𝐲 𝐒𝐮𝐩𝐞𝐫 𝐐𝐮𝐚𝐥𝐢𝐭𝐲 ❥︎ 𝐊𝐢𝐜𝐤
+━━━━━━━━━━━━━━━━━━━━━━━━**""",
+    reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "➕ ❰ 𝐀𝐝𝐝 𝐌𝐞 𝐓𝐨 𝐘𝐨𝐮𝐫 𝐆𝐫𝐨𝐮𝐩 ❱ ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")
+                ]
+                
+           ]
+        ),
+    )
+
+
+@Bgt.on(events.NewMessage(pattern="/leave"))
+async def _(e):
+    if e.sender_id in SUDO_USERS:
+        Bgtop = ("".join(e.text.split(maxsplit=1)[1:])).split(" ", 1)
+        if len(e.text) > 7:
+            bc = Bgtoel[0]
+            bc = int(bc)
+            text = "𝐋𝐞𝐯𝐢𝐧𝐠 🚶‍♂️....."
+            event = await e.reply(text, parse_mode=None, link_preview=None )
+            try:
+                await event.client(LeaveChannelRequest(bc))
+                await event.edit("𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐥𝐞𝐟𝐭 🍭")
+            except Exception as e:
+                await event.edit(str(e))   
+        else:
+            bc = e.chat_id
+            text = "𝐋𝐞𝐯𝐢𝐧𝐠 🚶‍♂️....."
+            event = await e.reply(text, parse_mode=None, link_preview=None )
+            try:
+                await event.client(LeaveChannelRequest(bc))
+                await event.edit("𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐥𝐞𝐟𝐭 🍭")
+            except Exception as e:
+                await event.edit(str(e))   
+          
+
+@Bgt.on(events.NewMessage(pattern="/restart"))
+async def restart(e):
+    if e.sender_id in SUDO_USERS:
+        text = "🔃 𝐑𝐞𝐬𝐭𝐚𝐫𝐭𝐢𝐧𝐠 🔄 !!!"
+        await e.reply(text, parse_mode=None, link_preview=None )
+        try:
+            await Bgt.disconnect()
+        except Exception:
+            pass
+        os.execl(sys.executable, sys.executable, *sys.argv)
+        quit()
+
+
+print(" 𝐇𝐢 𝐃𝐞𝐚𝐫 𝐌𝐚𝐬𝐭𝐞𝐫 \n\n")
+print("𝐘𝐨𝐮𝐫 𝐁𝐚𝐧𝐚𝐥𝐥 𝐁𝐨𝐭 𝐃𝐞𝐩𝐥𝐨𝐲𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲  ✅")
+
+Bgt.run_until_disconnected()
